@@ -6,6 +6,24 @@
 
 let
   colors = config.lib.stylix.colors.withHashtag;
+  palette = {
+    defaultBackground = colors.base00;
+    lighterBackground = colors.base01;
+    selectionBackground = colors.base02;
+    comments = colors.base03;
+    darkForeground = colors.base04;
+    defaultForeground = colors.base05;
+    lightForeground = colors.base06;
+    lightBackground = colors.base07;
+    variables = colors.base08;
+    integers = colors.base09;
+    classes = colors.base0A;
+    strings = colors.base0B;
+    support = colors.base0C;
+    functions = colors.base0D;
+    keywords = colors.base0E;
+    deprecated = colors.base0F;
+  };
 in
 
 {
@@ -63,10 +81,189 @@ in
 
   programs.zellij = {
     enable = true;
+
+    extraConfig = ''
+      keybinds {
+          unbind "Ctrl g" "Ctrl p" "Ctrl n" "Ctrl h" "Ctrl t" "Ctrl s" "Ctrl o" "Ctrl b" "Ctrl q"
+
+          shared_except "locked" {
+              bind "Super g" { SwitchToMode "Locked"; }
+          }
+          shared_except "pane" "locked" {
+              bind "Super p" { SwitchToMode "Pane"; }
+          }
+          shared_except "resize" "locked" {
+              bind "Super n" { SwitchToMode "Resize"; }
+          }
+          shared_except "scroll" "locked" {
+              bind "Super s" { SwitchToMode "Scroll"; }
+          }
+          shared_except "session" "locked" {
+              bind "Super o" { SwitchToMode "Session"; }
+          }
+          shared_except "tab" "locked" {
+              bind "Super t" { SwitchToMode "Tab"; }
+          }
+          shared_except "move" "locked" {
+              bind "Super h" { SwitchToMode "Move"; }
+          }
+          shared_except "tmux" "locked" {
+              bind "Super b" { SwitchToMode "Tmux"; }
+          }
+
+          pane {
+              bind "Super p" { SwitchToMode "Normal"; }
+          }
+          tab {
+              bind "Super t" { SwitchToMode "Normal"; }
+          }
+          resize {
+              bind "Super n" { SwitchToMode "Normal"; }
+          }
+          move {
+              bind "Super h" { SwitchToMode "Normal"; }
+          }
+          scroll {
+              bind "Super s" { SwitchToMode "Normal"; }
+          }
+          search {
+              bind "Super s" { SwitchToMode "Normal"; }
+          }
+          session {
+              bind "Super o" { SwitchToMode "Normal"; }
+          }
+          tmux {
+              bind "Super b" { Write 2; SwitchToMode "Normal"; }
+          }
+          locked {
+              bind "Super g" { SwitchToMode "Normal"; }
+          }
+      }
+    '';
+
     settings = {
-      theme = "stylix";
+      theme = "toolkit";
       mouse_mode = true;
       default_shell = "zsh";
+
+      themes.toolkit = {
+        text_unselected = {
+          base = palette.defaultForeground;
+          background = palette.lighterBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        text_selected = {
+          base = palette.defaultForeground;
+          background = palette.selectionBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        ribbon_selected = {
+          base = palette.defaultBackground;
+          background = palette.functions;
+          emphasis_0 = palette.keywords;
+          emphasis_1 = palette.defaultBackground;
+          emphasis_2 = palette.support;
+          emphasis_3 = palette.classes;
+        };
+        ribbon_unselected = {
+          base = palette.darkForeground;
+          background = palette.selectionBackground;
+          emphasis_0 = palette.variables;
+          emphasis_1 = palette.defaultForeground;
+          emphasis_2 = palette.functions;
+          emphasis_3 = palette.support;
+        };
+        table_title = {
+          base = palette.functions;
+          background = palette.defaultBackground;
+          emphasis_0 = palette.keywords;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.darkForeground;
+          emphasis_3 = palette.comments;
+        };
+        table_cell_selected = {
+          base = palette.defaultForeground;
+          background = palette.selectionBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        table_cell_unselected = {
+          base = palette.defaultForeground;
+          background = palette.lighterBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        list_selected = {
+          base = palette.defaultForeground;
+          background = palette.selectionBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        list_unselected = {
+          base = palette.defaultForeground;
+          background = palette.lighterBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        frame_selected = {
+          base = palette.functions;
+          background = palette.defaultBackground;
+          emphasis_0 = palette.support;
+          emphasis_1 = palette.keywords;
+          emphasis_2 = palette.darkForeground;
+          emphasis_3 = palette.defaultBackground;
+        };
+        frame_highlight = {
+          base = palette.keywords;
+          background = palette.defaultBackground;
+          emphasis_0 = palette.functions;
+          emphasis_1 = palette.support;
+          emphasis_2 = palette.keywords;
+          emphasis_3 = palette.darkForeground;
+        };
+        exit_code_success = {
+          base = palette.support;
+          background = palette.defaultBackground;
+          emphasis_0 = palette.keywords;
+          emphasis_1 = palette.lighterBackground;
+          emphasis_2 = palette.support;
+          emphasis_3 = palette.functions;
+        };
+        exit_code_error = {
+          base = palette.variables;
+          background = palette.defaultBackground;
+          emphasis_0 = palette.variables;
+          emphasis_1 = palette.defaultBackground;
+          emphasis_2 = palette.defaultBackground;
+          emphasis_3 = palette.defaultBackground;
+        };
+        multiplayer_user_colors = {
+          player_1 = palette.functions;
+          player_2 = palette.support;
+          player_3 = palette.keywords;
+          player_4 = palette.classes;
+          player_5 = palette.strings;
+          player_6 = palette.integers;
+          player_7 = palette.variables;
+          player_8 = palette.comments;
+          player_9 = palette.lightForeground;
+          player_10 = palette.deprecated;
+        };
+      };
     };
   };
 
@@ -250,7 +447,7 @@ in
   };
 
   stylix.targets.foot.enable = true;
-  stylix.targets.zellij.enable = true;
+  stylix.targets.zellij.enable = false;
   stylix.targets.bat.enable = true;
   stylix.targets.fzf.enable = true;
   stylix.targets.tmux.enable = true;
